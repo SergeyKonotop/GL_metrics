@@ -1,0 +1,32 @@
+#!/usr/bin/env python
+"""
+Usage: ./metric KEY 
+
+Keys:
+  cpu    prints CPU metrics
+  mem    prints RAM metrics 
+"""
+import sys, psutil
+if len(sys.argv) != 2:
+    print(__doc__)
+    sys.exit(1)
+if sys.argv[1] == 'cpu':
+    cpu_time = psutil.cpu_times_percent(interval=2)
+    print('system.cpu.idle ' + str(cpu_time[3]))
+    print('system.cpu.user ' + str(cpu_time[0]))
+    print('system.cpu.guest ' + str(cpu_time[8]))
+    print('system.cpu.iowait ' + str(cpu_time[4]))
+    print('system.cpu.stolen ' + str(cpu_time[7]))
+    print('system.cpu.system ' + str(cpu_time[2]))
+elif sys.argv[1] == 'mem':
+    vmemory = psutil.virtual_memory()
+    swap_memory = psutil.swap_memory()
+    print('virtual total ' + str(vmemory[0]))
+    print('virtual used ' + str(vmemory[3]))
+    print('virtual free ' + str(vmemory[4]))
+    print('virtual shared ' + str(vmemory[9]))
+    print('swap total ' + str(swap_memory[0]))
+    print('swap used ' + str(swap_memory[1]))
+    print('swap free ' + str(swap_memory[2]))
+else:
+    print(__doc__)
